@@ -161,7 +161,7 @@ int32 strategyInit (sharedMemory_t* memMap, flagsChanges_t* changesMap)
     char filepath[2048];
     getExecName(filepath);
 
-    int start, end = 0;
+    int start = 0, end = 0;
     end=strlen(filepath); // including the final NULL
     for(int i=end-1; i>=0; i--) {
         if(filepath[i]!='/')
@@ -331,7 +331,7 @@ int32 strategy (sharedMemory_t* memMap, flagsChanges_t* changesMap)
             char msg[MLEN]; // This will be used for all add_message
             // 1. We send new orders if there is still room
 
-            boolean trading_ok_now;
+            boolean trading_ok_now = false;
             if(EVERY_NTH_MILISECOND_TO_TRADE == 0)
                 trading_ok_now = false;
             else if(((CALLBACK_systime.usec / 1000) % EVERY_NTH_MILISECOND_TO_TRADE) == 0)
