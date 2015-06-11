@@ -59,5 +59,7 @@ extern int32  getMapPrice_topOfBookSortedAsk (sharedMemory_t* map, idtype securi
 extern int32  getMapPrice_topOfBookSortedBid (sharedMemory_t* map, idtype security, uint32* priceList, uint32* liquidityList, idtype* tiIdList, int32* tiIndexList);
 extern int32  getMapPrice_fbdSortedBid (sharedMemory_t* map, idtype security, idtype tiId, uint32* priceList, uint32* liquidityList, idtype* quoteList);
 extern int32  getMapPrice_fbdSortedAsk (sharedMemory_t* map, idtype security, idtype tiId, uint32* priceList, uint32* liquidityList, idtype* quoteList);
+extern int32  getMapPrice_fbaSortedBid (sharedMemory_t* map, idtype security, idtype tiId, uint32* priceList, uint32* liquidityList, idtype* quoteList);
+extern int32  getMapPrice_fbaSortedAsk (sharedMemory_t* map, idtype security, idtype tiId, uint32* priceList, uint32* liquidityList, idtype* quoteList);
 
 #endif /* MAPAPI_H_ */
