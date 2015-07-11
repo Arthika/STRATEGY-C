@@ -24,7 +24,7 @@
 #include "asset.h"
 #include "security.h"
 #include "trade.h"
-#include "mapMacros.h"
+// #include "mapMacros.h"
 #include "params.h"
 
 /********************************************************************************************************************/
@@ -70,9 +70,13 @@
 #define venueID_INTEGRAL      3
 #define venueID_HOTSPOT       4
 #define venueID_LIQUIDX       5
-#define venueID_CITI          6
-#define venueID_SAXO          7
-#define venueID_EBS           8
+#define venueID_EBS           6
+#define venueID_FXCM          7
+#define venueID_FXONE         8
+#define venueID_CNX_ITCH      9
+#define venueID_SAXO          10
+#define venueID_CITI          11
+#define venueID_LMAX          12
 
 // ASK OR BID
 #define SIDE_BID 0

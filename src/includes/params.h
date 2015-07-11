@@ -28,7 +28,7 @@
 #define MAX_USER_SIZE        64
 #define MAX_PASSWORD_SIZE    64
 
-#define MAX_NUMBER_OF_USERS  64
+#define MAX_NUMBER_OF_USERS  128
 
 #define MAX_FILENAME_SIZE   256
 
