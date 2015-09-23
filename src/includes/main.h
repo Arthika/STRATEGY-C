@@ -51,5 +51,4 @@ extern int32 setDbgLevel (uint32 level);
 extern void  exitStub (void);
 extern void  exitFromCoreToStrategy (idtype strategyId);
 
-
 #endif /* MAIN_H_ */

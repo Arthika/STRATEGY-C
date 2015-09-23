@@ -755,9 +755,11 @@ void init_myUtils(sharedMemory_t *memMap) {
 
         int32 foundit = getBaseAndTermStr (secId, baseStr, termStr);
 
-        if(OK == foundit) {
+        if(OK == foundit)
+        {
             sprintf(securityName[secId],"%s%c%s", baseStr, '/', termStr);
-        } else {
+        } else
+        {
             sprintf(securityName[secId],"?? Undefined security (%d)", secId);
         }
 
@@ -1075,7 +1077,19 @@ void render_message_HTML(int msg_index, char *where) {
 }
 
 
-int32 mySendTradeToCore(sharedMemory_t* memMap, char* user, tradeCommand_t* tradeCommand, uint32* tempTradeId, boolean *succeeded) {
+
+
+int32 mySendTradeToCore(sharedMemory_t* memMap, tradeCommand_t* tradeCommand, uint32* tempTradeId, boolean *succeeded) {
+
+    return mySendTradeToCore_user(memMap, memMap->strUser, tradeCommand, tempTradeId, succeeded);
+
+}
+
+
+
+
+
+int32 mySendTradeToCore_user(sharedMemory_t* memMap, char* user, tradeCommand_t* tradeCommand, uint32* tempTradeId, boolean *succeeded) {
 
     int result = OK;
     if(succeeded != NULL) *succeeded = false;
@@ -1132,7 +1146,17 @@ int32 mySendTradeToCore(sharedMemory_t* memMap, char* user, tradeCommand_t* trad
 }
 
 
-int32 myModifyTradeToCore(sharedMemory_t* memMap, char* user, char* fixTradeId, idtype tiIndex, uint32 price, int32 quantity, boolean unconditional) {
+
+int32 myModifyTradeToCore(sharedMemory_t* memMap, char* fixTradeId, idtype tiIndex, uint32 price, int32 quantity, boolean unconditional) {
+
+    return myModifyTradeToCore_user(memMap, memMap->strUser, fixTradeId, tiIndex, price, quantity, unconditional);
+
+}
+
+
+
+
+int32 myModifyTradeToCore_user(sharedMemory_t* memMap, char* user, char* fixTradeId, idtype tiIndex, uint32 price, int32 quantity, boolean unconditional) {
 
     int result = ModifyTradeToCore(memMap, user, fixTradeId, price, quantity, unconditional);
 //    nTradesThisSecond++;
@@ -1142,7 +1166,19 @@ int32 myModifyTradeToCore(sharedMemory_t* memMap, char* user, char* fixTradeId, 
 }
 
 
-int32 myCancelTradeToCore(sharedMemory_t* memMap, char* user, char* fixTradeId, idtype tiIndex) {
+
+
+int32 myCancelTradeToCore(sharedMemory_t* memMap, char* fixTradeId, idtype tiIndex) {
+
+    return myCancelTradeToCore_user(memMap, memMap->strUser, fixTradeId, tiIndex);
+
+}
+
+
+
+
+
+int32 myCancelTradeToCore_user(sharedMemory_t* memMap, char* user, char* fixTradeId, idtype tiIndex) {
 
     int result = CancelTradeToCore(memMap, user, fixTradeId);
     return result;

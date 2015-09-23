@@ -40,7 +40,7 @@
 
 extern int32   getExecName (char* name);
 extern int32   getNumberOfUsers (void);
-void setNumberofUsers (int32 number);
+void 		   setNumberofUsers (int32 number);
 extern int32   getUserAndPassword (int32 userIndex, idtype* auId, char* user, char* password);
 extern int32   checkUserAndPassword (char* user, char* password, int32* userIndex, idtype* auId);
 extern idtype  getAccountingUnitId (int32 userIndex);

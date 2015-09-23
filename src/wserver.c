@@ -2380,7 +2380,7 @@ fflush(stderr);
 
                   uint32 tradeStrID = 0;
                   boolean succeeded;
-                  int32 result = mySendTradeToCore(memMap, memMap->strUser, &trade, &tradeStrID, &succeeded);
+                  int32 result = mySendTradeToCore(memMap, &trade, &tradeStrID, &succeeded);
                   stubDbg (DEBUG_INFO_LEVEL, ">>> Trade sent, result = %d, tradeStrID = %d\n\n", result, tradeStrID);
                   if(!succeeded) {
                       stubDbg (DEBUG_INFO_LEVEL, "!!! Trade did not succeed (in the call to mySendTradeToCore, result = %d, tradeStrID = %d )\n\n", result, tradeStrID);
@@ -2611,7 +2611,7 @@ fflush(stderr);
 
           stubDbg (DEBUG_INFO_LEVEL, ">>> Sending cancel to core for trade ID %s, TI #%d (%s)\n",
                   which_trade, ti_index, memMap->tradingInterfaceName[ti_index]);
-          int32 result = myCancelTradeToCore(memMap, memMap->strUser, which_trade, ti_index);
+          int32 result = myCancelTradeToCore(memMap, which_trade, ti_index);
           stubDbg (DEBUG_INFO_LEVEL, ">>> Cancel sent, result = %d\n\n", result);
 
           // Now to refresh trade window rather than go to a confirmation page
@@ -2685,7 +2685,7 @@ fflush(stderr);
 
           stubDbg (DEBUG_INFO_LEVEL, ">>> Sending replace to core for trade ID %s\n  - New price is %d\n  - New quantity is %d\n",
                    which_trade, new_price, new_quantity);
-          int32 result = myModifyTradeToCore(memMap, memMap->strUser, which_trade, ti_index, new_price, new_quantity, true);
+          int32 result = myModifyTradeToCore(memMap, which_trade, ti_index, new_price, new_quantity, true);
           stubDbg (DEBUG_INFO_LEVEL, ">>> Replace sent, result = %d\n\n", result);
 
           // Now to refresh trade window rather than go to a confirmation page

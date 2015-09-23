@@ -19,6 +19,8 @@
 #ifndef MAP_H_
 #define MAP_H_
 
+#define NO_RESERVED
+
 #include "hftUtils_types.h"
 #include "megatick.h"
 #include "asset.h"
@@ -62,6 +64,8 @@
 #define MAX_TRADE_REASON_SIZE 256
 
 #define MAX_TEST_MEASURES 1024
+
+#define MAXNUMCHANGES (MAXNUMTICK+(MAX_NUMBER_PB*MAX_NUMBER_OF_USERS))
 
 // Venue types (each venue has been identified by type to be processed by fsmt and fix machine)
 #define venueID_TEST          0
@@ -236,25 +240,20 @@ typedef struct _sharedAuMemory_t_
     number               Equity_STR[MAX_NUMBER_PB];
     number               UsedMargin_STR[MAX_NUMBER_PB];
     number               FreeMargin_STR[MAX_NUMBER_PB];
-    number               ResvMargin_STR[MAX_NUMBER_PB];
-    number               FreeMarginResv_STR[MAX_NUMBER_PB];
     number               GlobalEquity_STR;
 
     /* Assets Exposures section */
     number               AssetExposure[MAX_NUMBER_PB][NUM_ASSETS];              // M1
-    number               ReservedAssetExposure[MAX_NUMBER_PB][NUM_ASSETS];      // Reserved M1
     /* Security exposures section */
     mtSecurityExposure_t SecurityExposure[MAX_NUMBER_PB][NUM_SECURITIES];       // M2
     exposureInt_t        SecurityExposureInt[MAX_NUMBER_PB][NUM_SECURITIES];    // M2 integer, Amount and Price
 
     /* Total exposure */
     number               TotalExposure[MAX_NUMBER_PB][NUM_ASSETS];              // M4
-    number               ReservedTotalExposure[MAX_NUMBER_PB][NUM_ASSETS];      // Reserved M4
 
     /* Total exposure multiplied per price */
     number               TotalExposureWprice[MAX_NUMBER_PB][NUM_ASSETS];        // M5
     number               TotalMarginWprice[MAX_NUMBER_PB][NUM_ASSETS];          // M6
-    number               TotalReservedMarginWprice[MAX_NUMBER_PB][NUM_ASSETS];  // M6 reserve
 
     /* Global data accumulated for all PB by AU */
     number               GblAssetExposureAU[NUM_ASSETS];              // M1 Accounting unit accumulation (all prime brokers)
@@ -262,6 +261,14 @@ typedef struct _sharedAuMemory_t_
     exposureInt_t        GblSecurityExposureAUInt[NUM_SECURITIES];    // M2 integer Price
     number               GblTotalExposureAU[NUM_ASSETS];              // M4 Accounting unit accumulation (all prime brokers)
     number               GblTotalExposureWpriceAU[NUM_ASSETS];        // M5 Accounting unit accumulation (all prime brokers)
+
+#ifndef NO_RESERVED
+    number               ReservedAssetExposure[MAX_NUMBER_PB][NUM_ASSETS];      // Reserved M1
+    number               ResvMargin_STR[MAX_NUMBER_PB];
+    number               ReservedTotalExposure[MAX_NUMBER_PB][NUM_ASSETS];      // Reserved M4
+    number               FreeMarginResv_STR[MAX_NUMBER_PB];
+    number               TotalReservedMarginWprice[MAX_NUMBER_PB][NUM_ASSETS];  // M6 reserve
+#endif
 
     /****************************************************************************************************************/
     /* Trades section */
@@ -294,25 +301,20 @@ typedef struct _sharedEpMemory_t_
     number               Equity_EP[MAX_NUMBER_PB];
     number               UsedMargin_EP[MAX_NUMBER_PB];
     number               FreeMargin_EP[MAX_NUMBER_PB];
-    number               ResvMargin_EP[MAX_NUMBER_PB];
-    number               FreeMarginResv_EP[MAX_NUMBER_PB];
     number               GlobalEquity_EP;
 
     /* Assets Exposures section */
     number               AssetExposureEP[MAX_NUMBER_PB][NUM_ASSETS];             // M1 for Equity Pool
-    number               AssetExposureReservedEP[MAX_NUMBER_PB][NUM_ASSETS];     // M1 Reserved for Equity Pool
 
     /* Security exposures section */
     mtSecurityExposure_t SecurityExposureEP[MAX_NUMBER_PB][NUM_SECURITIES];      // M2 for Equity Pool
     exposureInt_t        SecurityExposureEPInt[MAX_NUMBER_PB][NUM_SECURITIES];   // M2 integer, Amount and Price
 
     number               TotalExposureEP[MAX_NUMBER_PB][NUM_ASSETS];             // M4 for Equity Pool
-    number               TotalExposureReservedEP[MAX_NUMBER_PB][NUM_ASSETS];     // M4 Reserved for Equity Pool
 
     /* Total exposure multiplied per price */
     number               TotalExposureWpriceEP[MAX_NUMBER_PB][NUM_ASSETS];       // M5
     number               TotalMarginWpriceEP[MAX_NUMBER_PB][NUM_ASSETS];         // M6
-    number               TotalReservedMarginWpriceEP[MAX_NUMBER_PB][NUM_ASSETS]; // M6 reserve
 
     /* EXPOSURES */
     number               GblAssetExposureEP[NUM_ASSETS];            // M1 Equity pool accumulation
@@ -320,6 +322,14 @@ typedef struct _sharedEpMemory_t_
     exposureInt_t        GblSecurityExposureEPInt[NUM_SECURITIES];  // M2 integer Price
     number               GblTotalExposureEP[NUM_ASSETS];            // M4 Equity pool accumulation
     number               GblTotalExposureWpriceEP[NUM_ASSETS];            // M4 Equity pool accumulation
+#ifndef NO_RESERVED
+    number               ResvMargin_EP[MAX_NUMBER_PB];
+    number               FreeMarginResv_EP[MAX_NUMBER_PB];
+    number               AssetExposureReservedEP[MAX_NUMBER_PB][NUM_ASSETS];     // M1 Reserved for Equity Pool
+    number               TotalExposureReservedEP[MAX_NUMBER_PB][NUM_ASSETS];     // M4 Reserved for Equity Pool
+    number               TotalReservedMarginWpriceEP[MAX_NUMBER_PB][NUM_ASSETS]; // M6 reserve
+#endif
+
 }
 sharedEpMemory_t;
 
@@ -432,20 +442,15 @@ typedef struct _sharedMemory_t_
     number               Equity_PB[MAX_NUMBER_PB];
     number               UsedMargin_PB[MAX_NUMBER_PB];
     number               FreeMargin_PB[MAX_NUMBER_PB];
-    number               ResvMargin_PB[MAX_NUMBER_PB];
-    number               FreeMarginResv_PB[MAX_NUMBER_PB];
     number               GlobalEquity_PB;
     /* Assets and securities Exposures section */
     number               AssetExposurePB[MAX_NUMBER_PB][NUM_ASSETS];           // M1 for Prime Broker
-    number               AssetExposureReservedPB[MAX_NUMBER_PB][NUM_ASSETS];   // M1 Reserved for Prime Broker
     mtSecurityExposure_t SecurityExposurePB[MAX_NUMBER_PB][NUM_SECURITIES];    // M2 for Prime Broker
     exposureInt_t        SecurityExposurePBInt[MAX_NUMBER_PB][NUM_SECURITIES]; // M2 integer, Amount and Price
     number               TotalExposurePB[MAX_NUMBER_PB][NUM_ASSETS];           // M4 for Prime Broker
-    number               TotalExposureReservedPB[MAX_NUMBER_PB][NUM_ASSETS];   // M4 Reserved for Prime Broker
     /* Total exposure multiplied per price */
     number               TotalExposureWpricePB[MAX_NUMBER_PB][NUM_ASSETS];     // M5
     number               TotalMarginWpricePB[MAX_NUMBER_PB][NUM_ASSETS];
-    number               TotalReservedMarginWpricePB[MAX_NUMBER_PB][NUM_ASSETS];
     /* EXPOSURES */
     number               GblAssetExposurePB[NUM_ASSETS];        // M1 Prime brokers accumulation
     mtSecurityExposure_t GblSecurityExposurePB[NUM_SECURITIES]; // M2 Prime brokers accumulation
@@ -454,7 +459,15 @@ typedef struct _sharedMemory_t_
     number               GblTotalExposureWpricePB[NUM_ASSETS];        // M4 Prime brokers accumulation
 
     number               sharedMarginPB[MAX_NUMBER_PB]; /**< Shared margin for this prime broker */
+
+#ifndef NO_RESERVED
+    number               ResvMargin_PB[MAX_NUMBER_PB];
+    number               FreeMarginResv_PB[MAX_NUMBER_PB];
+    number               AssetExposureReservedPB[MAX_NUMBER_PB][NUM_ASSETS];   // M1 Reserved for Prime Broker
+    number               TotalReservedMarginWpricePB[MAX_NUMBER_PB][NUM_ASSETS];
+    number               TotalExposureReservedPB[MAX_NUMBER_PB][NUM_ASSETS];   // M4 Reserved for Prime Broker
     number               sharedReservedMarginPB[MAX_NUMBER_PB]; /**< Shared margin for this prime broker */
+#endif
 
     /****************************************************************************************************************/
     /* Replaced Quotes information (only activated by user for one security and one ti per element in list) */
@@ -494,7 +507,7 @@ change_t;
 typedef struct _flagsChanges_t_
 {
     uint16   numberChanges;        /**< Number of changes inside this list */
-    change_t changes[MAXNUMTICK];  /**< changes contents */
+    change_t changes[MAXNUMCHANGES];  /**< changes contents */
 }
 flagsChanges_t;
 
@@ -552,5 +565,16 @@ extern int32 setUserAsStrategyMainUser (sharedMemory_t* memMap, char* user);
 /* Replaced quotes tools */
 extern int32 setSecurityForQuotesReplacedInfo (sharedMemory_t* memMap, uint32 indexList, idtype security, idtype tiIndex);
 extern int32 resetSecurityForQuotesReplacedInfo (sharedMemory_t* memMap, uint32 indexList);
+
+/***************************************************************************************************
+ * ACCOUNTING                                                                                      *
+ ***************************************************************************************************/
+extern int32   connectAu (sharedMemory_t* memMap, idtype auId);
+extern int32   getConnectedAuIndex(int32 i, idtype auId);
+extern int32   getConnectedEpIndex(int32 i, idtype epId);
+extern boolean getAccountingPb(sharedMemory_t* memMap, int32 i);
+extern int32   setAccountingPb(sharedMemory_t* memMap, idtype pbId, boolean value);
+extern void    setFastAccounting(boolean value);
+extern boolean getFastAccounting();
 
 #endif /* MAP_H_ */

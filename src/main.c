@@ -33,7 +33,6 @@
 /* Static data */
 static boolean exitProgram = false;
 
-
 /* Main function definition: don touch it */
 int main(int argc, char* argv[])
 {
@@ -84,7 +83,7 @@ int main(int argc, char* argv[])
         stubDbgTerm ();
     }
 
-    return result;
+    return (result);
 }
 
 /* terminate program, global exit */
@@ -101,4 +100,3 @@ void exitFromCoreToStrategy (idtype strategyId)
     fprintf (stdout, "EXIT command received from core for Strategy %d\n", strategyId);
     return;
 }
-

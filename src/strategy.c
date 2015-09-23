@@ -204,7 +204,7 @@ int32 strategyInit (sharedMemory_t* memMap, flagsChanges_t* changesMap)
     stubDbg (DEBUG_INFO_LEVEL, "Initializing strategy for accounting id %d (user name is %s)\n", auId, userName);
 
     stubDbg (DEBUG_INFO_LEVEL, "Initializing IDs ...\n");
-    init_myUtils(memMap); // This is to initialize the wrapper variables to access TI and PBs with the map indexes
+
     stubDbg (DEBUG_INFO_LEVEL, "Done!\n");
 
     stubDbg (DEBUG_INFO_LEVEL, "Loading and initializing parameters ...\n");
@@ -233,6 +233,7 @@ int32 strategyInit (sharedMemory_t* memMap, flagsChanges_t* changesMap)
     stubDbg(DEBUG_INFO_LEVEL, "Now setting automatic timeouts (when no real ticks are received) to 100ms\n");
     setNotifyTimeout(50);
 
+    init_myUtils(memMap); // This is to initialize the wrapper variables to access TI and PBs with the map indexes
 
     auIndex = memMap->strAuIndex;
     if(memMap->AccountingUnit[auIndex].numberOfAlives>0) {
@@ -419,7 +420,7 @@ int32 strategy (sharedMemory_t* memMap, flagsChanges_t* changesMap)
                 boolean succeeded;
                 if(memMap->tradingInterfaceOk[thisTI] == TI_STATUS_OK) {
 
-                    mySendTradeToCore(memMap, userName, &tc, NULL, &succeeded);
+                    mySendTradeToCore(memMap, &tc, NULL, &succeeded);
 
                     if(succeeded) {
 
@@ -538,7 +539,7 @@ int32 strategy (sharedMemory_t* memMap, flagsChanges_t* changesMap)
 
 
                         if(rand()%STR_1_IN_N_TO_CANCEL_LIMIT == 0) { // One in every STR_1_IN_N_TO_CANCEL_LIMIT times we cancel the outstanding order
-                            myCancelTradeToCore(memMap, userName, thisTrade->ids.fixId, memMap->tradingInterfaceIndex[str_orderRecords[thisRecord].tiId]);
+                            myCancelTradeToCore(memMap, thisTrade->ids.fixId, memMap->tradingInterfaceIndex[str_orderRecords[thisRecord].tiId]);
                             str_orderRecords[thisRecord].shouldExecuteSoon=true;
                             str_orderRecords[thisRecord].cancelRequested=true;
                             str_orderRecords[thisRecord].lastModified=CALLBACK_systime;
@@ -564,7 +565,7 @@ int32 strategy (sharedMemory_t* memMap, flagsChanges_t* changesMap)
     //                        if(new_price > memMap->mapBookSpInt[thisSec]) {
     //                                str_orderRecords[thisRecord].shouldExecuteSoon=true; // Deactivated to help Rubén
     //                        } // new_price > system price =>
-                            myModifyTradeToCore(memMap, userName, thisTrade->ids.fixId, memMap->tradingInterfaceIndex[str_orderRecords[thisRecord].tiId], new_price, str_orderRecords[thisRecord].quantity, true);
+                            myModifyTradeToCore(memMap, thisTrade->ids.fixId, memMap->tradingInterfaceIndex[str_orderRecords[thisRecord].tiId], new_price, str_orderRecords[thisRecord].quantity, true);
                             str_orderRecords[thisRecord].replaceRequested=true;
                             str_orderRecords[thisRecord].replacePrice=new_price;
                             str_orderRecords[thisRecord].lastModified=CALLBACK_systime;
@@ -605,7 +606,7 @@ int32 strategy (sharedMemory_t* memMap, flagsChanges_t* changesMap)
                                 thisTradeParams->reservedData,
                                 MTtimeStr
                                );
-                        myCancelTradeToCore(memMap, userName, thisTrade->ids.fixId, memMap->tradingInterfaceIndex[str_orderRecords[thisRecord].tiId]);
+                        myCancelTradeToCore(memMap, thisTrade->ids.fixId, memMap->tradingInterfaceIndex[str_orderRecords[thisRecord].tiId]);
                         str_orderRecords[thisRecord].lastModified=CALLBACK_systime;
                         str_orderRecords[thisRecord].cancelRequested=true;
                         str_orderRecords[thisRecord].shouldExecuteSoon=true;
@@ -627,7 +628,7 @@ int32 strategy (sharedMemory_t* memMap, flagsChanges_t* changesMap)
                                 thisTradeParams->reservedData,
                                 MTtimeStr
                                );
-                        myCancelTradeToCore(memMap, userName, thisTrade->ids.fixId, memMap->tradingInterfaceIndex[str_orderRecords[thisRecord].tiId]);
+                        myCancelTradeToCore(memMap, thisTrade->ids.fixId, memMap->tradingInterfaceIndex[str_orderRecords[thisRecord].tiId]);
                     } // random cancel
 
                 } // for trades alive

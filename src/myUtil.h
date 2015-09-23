@@ -57,9 +57,12 @@ extern int32 willThisTradeWork_au(sharedMemory_t* memMap, int32 auIndex, tradeCo
 extern int32 roundTrade(int32 amountToRound);
 
 // These two just wrappers to add too many trades control:
-extern int32 mySendTradeToCore     (sharedMemory_t* memMap, char* user, tradeCommand_t* tradeCommand, uint32* tempTradeId, boolean *succeeded);
-extern int32 myModifyTradeToCore   (sharedMemory_t* memMap, char* user, char* fixTradeId, idtype tiIndex, uint32 price, int32 quantity, boolean unconditional);
-extern int32 myCancelTradeToCore   (sharedMemory_t* memMap, char* user, char* fixTradeId, idtype tiIndex);
+extern int32 mySendTradeToCore          (sharedMemory_t* memMap, tradeCommand_t* tradeCommand, uint32* tempTradeId, boolean *succeeded);
+extern int32 mySendTradeToCore_user     (sharedMemory_t* memMap, char* user, tradeCommand_t* tradeCommand, uint32* tempTradeId, boolean *succeeded);
+extern int32 myModifyTradeToCore        (sharedMemory_t* memMap, char* fixTradeId, idtype tiIndex, uint32 price, int32 quantity, boolean unconditional);
+extern int32 myModifyTradeToCore_user   (sharedMemory_t* memMap, char* user, char* fixTradeId, idtype tiIndex, uint32 price, int32 quantity, boolean unconditional);
+extern int32 myCancelTradeToCore        (sharedMemory_t* memMap, char* fixTradeId, idtype tiIndex);
+extern int32 myCancelTradeToCore_user   (sharedMemory_t* memMap, char* user, char* fixTradeId, idtype tiIndex);
 
 
 /************************************************************************************/

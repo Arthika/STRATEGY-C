@@ -60,6 +60,10 @@
 #define TRADE_STATE_REPLACED_TO_CANCEL     9
 #define TRADE_STATE_CANCELED_BY_USER       10
 
+// Trade Error
+#define ERROR_NOMARGIN							-1004 // No margin
+#define ERROR_WRONGUSER							-1005 // Wrong user
+
 /* trade status struct */
 
 typedef struct _tradeCommand_t_

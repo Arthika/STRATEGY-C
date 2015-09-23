@@ -341,7 +341,7 @@ boolean send_best_immediate_order_PB_TI(sharedMemory_t* memMap, idtype security,
                     tc.unconditional=true; // Changed until margin reserves work well
                 tc.checkWorstCase=false;
                 tc.reservedData=codeReserved;
-                mySendTradeToCore(memMap, user, &tc, &tempTradeId, &succeeded);
+                mySendTradeToCore(memMap, &tc, &tempTradeId, &succeeded);
                 if(succeeded) {
                     char amS[NLEN];
                     renderWithDots(amS,amountToSend[tiIndex], false);
@@ -431,7 +431,7 @@ void sendCancelsToAllPendingOrders(sharedMemory_t* memMap, int32 auIndex) {
                                        (memMap->AccountingUnit[auIndex].alive[t].info.modify.rejected ? "" : "NOT "),
                                        MTtimeStr
                                        );
-            int32 result = myCancelTradeToCore(memMap, user, memMap->AccountingUnit[auIndex].alive[t].ids.fixId, tiIndex);
+            int32 result = myCancelTradeToCore(memMap, memMap->AccountingUnit[auIndex].alive[t].ids.fixId, tiIndex);
             someCancelSent = true;
             stubDbg (DEBUG_INFO_LEVEL, "--- Cancel sent, result = %d\n\n", result);
 

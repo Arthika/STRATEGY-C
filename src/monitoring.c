@@ -1670,11 +1670,12 @@ int32 do_monitoring (sharedMemory_t* memMap,
                                                   );
 */
 // Less verbose:
-                        stubDbg(DEBUG_INFO_LEVEL, "!!! Price delay in %s: %ldms @ MTtime %s\n",
-                                                  memMap->tradingInterfaceName[tiIndex],
-                                                  thisDelay - minFixToStubDelay_ms[tiIndex],
-                                                  MTtimeStr
-                                                  );
+                        if(reportDelaysAndNoTicks)
+                            stubDbg(DEBUG_INFO_LEVEL, "!!! Price delay in %s: %ldms @ MTtime %s\n",
+                                                      memMap->tradingInterfaceName[tiIndex],
+                                                      thisDelay - minFixToStubDelay_ms[tiIndex],
+                                                      MTtimeStr);
+
                         pricesDelayedInitialTimestamp[tiIndex]=CALLBACK_systime;
 
                     }
@@ -1697,10 +1698,12 @@ int32 do_monitoring (sharedMemory_t* memMap,
                                                   MTtimeStr);
 */
 // Less verbose:
-                        stubDbg(DEBUG_INFO_LEVEL, "!!! Price ok in %s after %lld ms @MTtime %s\n",
-                                                  memMap->tradingInterfaceName[tiIndex],
-                                                  downTime,
-                                                  MTtimeStr);
+                        if(reportDelaysAndNoTicks)
+                            stubDbg(DEBUG_INFO_LEVEL, "!!! Price ok in %s after %lld ms @MTtime %s\n",
+                                                      memMap->tradingInterfaceName[tiIndex],
+                                                      downTime,
+                                                      MTtimeStr);
+
                     }
                     lastTickTimestamp[tiIndex] = CALLBACK_systime;
 
@@ -1723,16 +1726,11 @@ int32 do_monitoring (sharedMemory_t* memMap,
 
                 if(!noTicksLast[ti]) {
 
-/*
-                    stubDbg(DEBUG_INFO_LEVEL, "!!! No ticks in TI #%d (%s), MT time is %s\n",
-                                              ti,
-                                              memMap->tradingInterfaceName[ti],
-                                              MTtimeStr);
-*/
-// Less verbose:
-                    stubDbg(DEBUG_INFO_LEVEL, "!!! No ticks in %s @ MTtime %s\n",
-                                              memMap->tradingInterfaceName[ti],
-                                              MTtimeStr);
+                    if(reportDelaysAndNoTicks)
+                        stubDbg(DEBUG_INFO_LEVEL, "!!! No ticks in %s @ MTtime %s\n",
+                                                  memMap->tradingInterfaceName[ti],
+                                                  MTtimeStr);
+
                     noTicksInitialTimestamp[ti] = CALLBACK_systime;
 
                 } // if !noTicks
@@ -1756,10 +1754,11 @@ int32 do_monitoring (sharedMemory_t* memMap,
                                               MTtimeStr);
 */
 // Less verbose:
-                    stubDbg(DEBUG_INFO_LEVEL, "!!! Ticks ok in %s after %lld ms @ MTtime %s\n",
-                                              memMap->tradingInterfaceName[ti],
-                                              downTime,
-                                              MTtimeStr);
+                    if(reportDelaysAndNoTicks)
+                        stubDbg(DEBUG_INFO_LEVEL, "!!! Ticks ok in %s after %lld ms @ MTtime %s\n",
+                                                  memMap->tradingInterfaceName[ti],
+                                                  downTime,
+                                                  MTtimeStr);
 
                 }
 
